@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>App Pet Navegação</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="phone">
+
+    <!-- DRAWER OVERLAY -->
+    <div id="drawerOverlay" onclick="closeDrawer()"></div>
+
+    <!-- TOPO -->
+    <div id="topArea" class="top-area big">
+      <div id="menuBtn" class="menu-btn hidden" onclick="toggleDrawer()">
+        <span></span><span></span><span></span>
+      </div>
+
+      <div class="logo-box">
+        <img src="LOGOPET.jpg" alt="Logo do App Pet" />
+      </div>
+
+      <!-- user info (Tutor + Pet) - will be visible ONLY on tela3 -->
+      <div id="userInfo" class="user-info hidden" aria-hidden="true">
+        <div id="userName">Tutor: —</div>
+        <div id="petName">Pet: —</div>
+      </div>
+
+      <div class="top-curved"></div>
+    </div>
+
+    <!-- MAIN -->
+    <main>
+
+      <!-- LOGIN -->
+      <section id="tela1" class="screen active">
+        <h2>Login</h2>
+        <input type="email" id="loginNome" placeholder="Email do Tutor" />
+        <input type="password" id="loginSenha" placeholder="Senha" />
+        <button onclick="entrar()">Entrar</button>
+        <div class="link" onclick="abrirTela('telaCadastroTutor')">Ainda não tem conta? Criar</div>
+      </section>
+
+      <!-- CADASTRO TUTOR -->
+      <section id="telaCadastroTutor" class="screen">
+        <h2>Criar Conta — Tutor</h2>
+
+        <input type="text" id="tutorNome" placeholder="Nome do Tutor" />
+        <input type="email" id="tutorEmail" placeholder="Email" />
+        <input type="password" id="tutorSenha" placeholder="Senha" />
+        <div class="row-inputs">
+          <input type="text" id="tutorCidade" placeholder="Cidade" />
+          <input type="text" id="tutorEstado" placeholder="Estado (Ex: PE)" maxlength="2" />
+        </div>
+
+        <button onclick="proximoCadastroPet()">Próximo — Dados do Pet</button>
+        <div class="link" onclick="abrirTela('tela1')">Voltar ao Login</div>
+      </section>
+
+      <!-- CADASTRO PET -->
+      <section id="telaCadastroPet" class="screen">
+        <h2>Cadastrar Pet</h2>
+
+        <input type="text" id="petNomeCadastro" placeholder="Nome do Pet" />
+        <input type="text" id="petEspecieCadastro" placeholder="Espécie (Ex: Cachorro / Gato)" />
+        <div class="row-inputs">
+          <input type="number" id="petIdadeCadastro" min="0" placeholder="Idade (anos)" />
+          <select id="petSexoCadastro">
+            <option value="">Sexo</option>
+            <option value="Macho">Macho</option>
+            <option value="Fêmea">Fêmea</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </div>
+        <input type="text" id="petRacaCadastro" placeholder="Raça (opcional)" />
+        <input type="date" id="petDataNascCadastro" placeholder="Data de nascimento (opcional)" />
+
+        <button onclick="concluirCadastroTotal()">Concluir Cadastro</button>
+        <div class="link" onclick="abrirTela('telaCadastroTutor')">Voltar — Tutor</div>
+      </section>
+
+      <!-- TELA PRINCIPAL "MEU PET" (AQUI O NOME APARECE) -->
+      <section id="tela3" class="screen">
+        <h2 id="tituloMeuPet">Meu Pet</h2>
+
+        <div class="categorias">
+          <button class="categoria" onclick="abrirTela('telaConsultas🩺')">Consultas 🩺</button>
+          <button class="categoria" onclick="abrirTela('telaMedicamentos💊')">Medicamentos 💊</button>
+          <button class="categoria" onclick="abrirTela('telaVacinas💉')">Vacinas 💉</button>
+          <button class="categoria" onclick="abrirTela('telaDieta⚖️')">Dieta ⚖️</button>
+          <button class="categoria" onclick="abrirTela('telaPasseios🐾')">Passeios 🐾</button>
+          <button class="categoria" onclick="abrirTela('telaBanho🛁')">Banho 🛁</button>
+        </div>
+      </section>
+
+      <!-- DIETA -->
+      <section id="telaDieta⚖️" class="screen">
+        <h2>Controle de Dieta</h2>
+        <input type="text" id="dietaItem" placeholder="Peso Atual / Data da pesagem / alimentação" />
+        <button onclick="salvarDieta()">Salvar</button>
+        <div id="listaDieta" class="lista"></div>
+      </section>
+
+      <!-- CONSULTAS -->
+      <section id="telaConsultas🩺" class="screen">
+        <h2>Consultas Veterinárias</h2>
+        <input type="date" id="consultaData" />
+        <input type="text" id="consultaDesc" placeholder="Descrição da consulta" />
+        <button onclick="salvarConsulta()">Salvar</button>
+        <div id="listaConsultas" class="lista"></div>
+      </section>
+
+      <!-- PASSEIOS -->
+      <section id="telaPasseios🐾" class="screen">
+        <h2>Passeios</h2>
+        <input type="date" id="passeioData" />
+        <input type="text" id="passeioLocal" placeholder="Local / horário" />
+        <button onclick="salvarPasseio()">Salvar</button>
+        <div id="listaPasseios" class="lista"></div>
+      </section>
+
+      <!-- MEDICAMENTOS -->
+      <section id="telaMedicamentos💊" class="screen">
+        <h2>Rastreio de Medicamentos</h2>
+        <input type="date" id="medicamentosData" />
+        <input type="text" id="medicamentosLocal" placeholder="Dias / horário" />
+        <button onclick="salvarMedicamentos()">Salvar</button>
+        <div id="listaMedicamentos" class="lista"></div>
+      </section>
+
+      <!-- BANHO -->
+      <section id="telaBanho🛁" class="screen">
+        <h2>Banho e Tosa</h2>
+        <input type="date" id="banhoData" />
+        <input type="text" id="banhoLocal" placeholder="Local / observações" />
+        <button onclick="salvarBanho()">Salvar</button>
+        <div id="listaBanho" class="lista"></div>
+      </section>
+
+      <!-- VACINAS -->
+      <section id="telaVacinas💉" class="screen">
+        <h2>Vacinas</h2>
+        <input type="date" id="vacinaData" />
+        <input type="text" id="vacinaNome" placeholder="Nome da vacina" />
+        <button onclick="salvarVacina()">Salvar</button>
+        <div id="listaVacinas" class="lista"></div>
+      </section>
+
+      <!-- ALBUM -->
+      <section id="telaAlbum" class="screen">
+        <h2>Álbum do Pet</h2>
+        <input type="file" id="fotoInput" accept="image/*" />
+        <button onclick="adicionarFoto()">Adicionar Foto</button>
+        <div id="albumGrid" class="album-grid"></div>
+      </section>
+
+      <!-- REGISTROS -->
+      <section id="telaRegistros" class="screen">
+        <h2>Registros Gerais</h2>
+        <div id="listaRegistros" class="lista"></div>
+      </section>
+
+      <!-- TROCAR PET -->
+      <section id="telaTrocarPet" class="screen">
+        <h2>Trocar / Alterar Pet</h2>
+
+        <input type="text" id="nomeNovoPet" placeholder="Nome do novo Pet" />
+        <input type="text" id="especieNovoPet" placeholder="Espécie (Ex: Cachorro / Gato)" />
+        <div class="row-inputs">
+          <input type="number" id="idadeNovoPet" placeholder="Idade (anos)" min="0" />
+          <select id="sexoNovoPet">
+            <option value="">Sexo</option>
+            <option value="Macho">Macho</option>
+            <option value="Fêmea">Fêmea</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </div>
+        <input type="date" id="dataNascNovoPet" />
+        <button onclick="alterarPet()">Alterar (Criar novo pet)</button>
+
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <button onclick="mostrarListaPreviousPets()">Voltar para pet anterior (Selecionar)</button>
+          <button onclick="abrirTela('tela3')">Voltar</button>
+        </div>
+
+        <div id="listaPreviousContainer" style="margin-top:12px;"></div>
+      </section>
+
+      <!-- CONFIGURAÇÕES -->
+      <section id="telaConfiguracoes" class="screen">
+        <h2>Configurações</h2>
+
+        <label>Alterar Cidade</label>
+        <input type="text" id="configCidade" placeholder="Cidade" />
+
+        <label>Alterar Estado</label>
+        <input type="text" id="configEstado" placeholder="Estado (Ex: PE)" maxlength="2" />
+
+        <label>Escreva uma dúvida / sugestão</label>
+        <textarea id="configDuvida" placeholder="Digite sua dúvida ou sugestão..." rows="3"></textarea>
+
+        <label>Entrar em contato conosco (telefone / email)</label>
+        <input type="text" id="configContato" placeholder="Telefone ou email para contato" />
+
+        <label>Reclamações</label>
+        <textarea id="configReclamacao" placeholder="Descreva aqui sua reclamação..." rows="3"></textarea>
+
+        <button onclick="salvarConfiguracoes()">Salvar Ajustes</button>
+      </section>
+
+      <!-- COMUNIDADE -->
+      <section id="telaComunidade" class="screen">
+        <h2>Comunidade</h2>
+        <h3>Compartilhe uma dica / experiência</h3>
+        <textarea id="comunidadeMensagem" placeholder="Escreva aqui sua experiência ou dica..." rows="4"></textarea>
+
+        <div class="row-inputs">
+          <input type="text" id="comunidadeCidade" placeholder="Cidade" />
+          <select id="comunidadeEstado">
+            <option value="Todas">Estado (Todas)</option>
+            <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+            <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+            <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+            <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+            <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+            <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+            <option>SP</option><option>SE</option><option>TO</option>
+          </select>
+        </div>
+
+        <button onclick="adicionarNotaComunidade()">Publicar na Comunidade</button>
+
+        <h3>Filtrar por região</h3>
+        <div class="row-inputs">
+          <select id="filtroEstado">
+            <option value="Todas">Todas</option>
+            <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+            <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+            <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+            <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+            <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+            <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+            <option>SP</option><option>SE</option><option>TO</option>
+          </select>
+          <input type="text" id="filtroCidade" placeholder="Cidade (opcional)" />
+        </div>
+
+        <div id="listaComunidade" class="lista"></div>
+        <div class="link" onclick="abrirTela('tela3')">Voltar ao Meu Pet</div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer id="footer" class="footer hidden">
+      <button id="btnHomeFooter">Home</button>
+      <button onclick="abrirTela('telaAlbum')">Álbum</button>
+      <button onclick="abrirTela('telaRegistros')">Registros</button>
+    </footer>
+
+    <!-- NAV DRAWER -->
+    <nav id="drawer">
+      <button onclick="drawerClick('trocarPet')">Trocar Pet</button>
+      <button onclick="drawerClick('configuracoes')">Configurações</button>
+      <button onclick="drawerClick('comunidade')">Comunidade</button>
+      <button onclick="drawerClick('sair')">Sair</button>
+    </nav>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
